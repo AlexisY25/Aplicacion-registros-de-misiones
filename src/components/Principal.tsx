@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
   Button,
-  Platform
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -91,31 +91,37 @@ export default function Home() {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView>
         <View style={styles.formContainer}>
-          <Text style={styles.formTitle}>{idToUpdate ? 'Editar Emergencia' : 'Agregar Emergencia'}</Text>
+          <Text style={styles.formTitle}>{idToUpdate ? 'Editar Mision' : 'Agregar Mision'}</Text>
           <TextInput
             style={styles.input}
             placeholder="Fecha (YYYY-MM-DD)"
+            placeholderTextColor="#aaa"
             value={fecha}
             onChangeText={setFecha}
             onFocus={showDatePicker}
           />
           {showDatePpicker && (
-            <DateTimePicker
-              value={date}
-              mode="date"
-              display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-              onChange={handleDateChange}
-            />
+            <View style={styles.datePickerContainer}>
+              <DateTimePicker
+                value={date}
+                mode="date"
+                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                onChange={handleDateChange}
+                textColor="white" // Este prop no está soportado en Android
+              />
+            </View>
           )}
           <TextInput
             style={styles.input}
             placeholder="Título"
+            placeholderTextColor="#aaa"
             value={titulo}
             onChangeText={setTitulo}
           />
           <TextInput
             style={styles.input}
             placeholder="Descripción"
+            placeholderTextColor="#aaa"
             value={descripcion}
             onChangeText={setDescripcion}
           />
@@ -132,7 +138,7 @@ export default function Home() {
             <Text style={styles.imagePickerButtonText}>Seleccionar Audio</Text>
           </TouchableOpacity>
           <Button
-            title={idToUpdate ? 'Actualizar Emergencia' : 'Agregar Emergencia'}
+            title={idToUpdate ? 'Actualizar Mision' : 'Agregar Mision'}
             onPress={idToUpdate ? () => updateData(idToUpdate, fecha, titulo, descripcion, foto, audio, () => loadData(setMision), resetForm, setIdToUpdate) : () => setData(fecha, titulo, descripcion, foto, audio, () => loadData(setMision), resetForm)}
             color="#007bff"
           />
@@ -217,6 +223,10 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     backgroundColor: '#fff',
     color: '#000',
+  },
+  datePickerContainer: {
+    backgroundColor: '#2c2c2c',
+    borderRadius: 10,
   },
   imagePickerButton: {
     backgroundColor: '#007bff',

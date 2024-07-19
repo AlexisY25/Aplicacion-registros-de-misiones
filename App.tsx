@@ -1,56 +1,82 @@
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, StyleSheet, Text, View, Image, Alert, StatusBar as RNStatusBar } from 'react-native';
+import React from 'react';
+import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import Principal from './src/components/Principal';
+import AcercaDe from './src/components/AcercaDe';
 
 const Stack = createNativeStackNavigator();
 
-export default function App() {
-
+const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen 
-          name='Home'
-          
+        <Stack.Screen
+          name="Home"
           component={Principal}
-          options={{
-            
+          options={({ navigation }) => ({
             headerTitle: () => (
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ color: '#fff', fontWeight: 'bold', marginRight: 10 }}>Usuario_001</Text>
+              <View style={styles.headerTitleContainer}>
+                <Text style={styles.headerTitle}>Usuario_001</Text>
                 <Image source={require('./assets/perro.jpg')} style={styles.profileImage} />
               </View>
             ),
+            headerRight: () => (
+              <TouchableOpacity style={styles.headerRightButton} onPress={() => navigation.navigate('Acerca de')}>
+                <Icon name="info-circle" size={24} color="#fff" style={styles.headerRightIcon} />
+                <Text style={styles.headerRightText}>Acerca de</Text>
+              </TouchableOpacity>
+            ),
             headerTitleAlign: 'center',
-            headerLargeTitle: true,
+            headerStyle: { backgroundColor: '#1b1b1b' },
+            headerTintColor: '#fff',
+            headerTitleStyle: { fontWeight: 'bold' },
+          })}
+        />
+        <Stack.Screen
+          name="Acerca de"
+          component={AcercaDe}
+          options={{
+            headerTitle: 'Acerca de',
+            headerTitleAlign: 'center',
             headerStyle: { backgroundColor: '#1b1b1b' },
             headerTintColor: '#fff',
             headerTitleStyle: { fontWeight: 'bold' },
           }}
         />
       </Stack.Navigator>
-      <RNStatusBar barStyle="light-content" />
     </NavigationContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  headerTitleContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#1b1b1b',
   },
-  loadingText: {
+  headerTitle: {
     color: '#fff',
-    marginTop: 10,
+    fontWeight: 'bold',
+    marginRight: 10,
   },
   profileImage: {
     width: 32,
     height: 32,
     borderRadius: 16,
+  },
+  headerRightButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginRight: 10,
   },
+  headerRightIcon: {
+    marginRight: 5,
+  },
+  headerRightText: {
+    color: '#fff',
+    fontSize: 16,
+  },
 });
+
+export default App;
